@@ -106,6 +106,13 @@ dependencies {
     // 网络请求框架：https://github.com/getActivity/EasyHttp
     implementation 'com.hjq:http:6.9'
 
+    // Hutool 工具集：https://hutool.cn
+    implementation 'cn.hutool:hutool-core:5.8.25'
+
+    // Room 数据库：https://developer.android.google.cn/jetpack/androidx/releases/room
+    implementation 'androidx.room:room-runtime:2.5.2'
+    annotationProcessor 'androidx.room:room-compiler:2.5.2'
+
     // 权限请求框架：https://github.com/getActivity/XXPermissions
     implementation 'com.hjq:xxpermissions:6.5'
 
