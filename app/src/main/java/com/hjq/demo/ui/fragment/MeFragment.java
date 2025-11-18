@@ -7,6 +7,7 @@ import android.view.View;
 import com.hjq.demo.R;
 import com.hjq.demo.aop.SingleClick;
 import com.hjq.demo.common.MyFragment;
+import com.hjq.demo.download.ui.VideoDownloadActivity;
 import com.hjq.demo.ui.activity.AboutActivity;
 import com.hjq.demo.ui.activity.BrowserActivity;
 import com.hjq.demo.ui.activity.DialogActivity;
@@ -52,7 +53,7 @@ public final class MeFragment extends MyFragment<HomeActivity> {
         setOnClickListener(R.id.btn_me_dialog, R.id.btn_me_hint, R.id.btn_me_login, R.id.btn_me_register, R.id.btn_me_forget,
                 R.id.btn_me_reset, R.id.btn_me_change, R.id.btn_me_personal, R.id.btn_message_setting, R.id.btn_me_about,
                 R.id.btn_me_guide, R.id.btn_me_browser, R.id.btn_me_image_select, R.id.btn_me_image_preview,
-                R.id.btn_me_video_select, R.id.btn_me_video_play, R.id.btn_me_crash, R.id.btn_me_pay);
+                R.id.btn_me_video_select, R.id.btn_me_video_play, R.id.btn_me_video_download, R.id.btn_me_crash, R.id.btn_me_pay);
     }
 
     @Override
@@ -136,6 +137,9 @@ public final class MeFragment extends MyFragment<HomeActivity> {
                 break;
             case R.id.btn_me_video_play:
                 VideoPlayActivity.start(getAttachActivity(), "http://vfx.mtime.cn/Video/2019/06/29/mp4/190629004821240734.mp4", "速度与激情特别行动");
+                break;
+            case R.id.btn_me_video_download:
+                VideoDownloadActivity.start(getAttachActivity());
                 break;
             case R.id.btn_me_crash:
                 // 关闭 Bugly 异常捕捉

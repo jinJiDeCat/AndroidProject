@@ -118,6 +118,17 @@ dependencies {
     // OkHttp 框架：https://github.com/square/okhttp
     implementation 'com.squareup.okhttp3:okhttp:4.2.2'
 
+    // Room 数据库：https://developer.android.google.cn/jetpack/androidx/releases/room
+    implementation 'androidx.room:room-runtime:2.6.1'
+    annotationProcessor 'androidx.room:room-compiler:2.6.1'
+
+    // Lifecycle 组件
+    implementation 'androidx.lifecycle:lifecycle-livedata:2.6.2'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.6.2'
+
+    // Hutool 工具包：https://hutool.cn
+    implementation 'cn.hutool:hutool-all:5.8.26'
+
     // JSON 解析框架：https://github.com/google/gson
     implementation 'com.google.code.gson:gson:2.8.6'
 
@@ -171,5 +182,5 @@ dependencies {
     // 图片裁剪：https://github.com/Yalantis/uCrop
     // 图片压缩：https://github.com/Curzibn/Luban
     // 对象存储：https://github.com/leavesC/DoKV
-    // 对象注解：https://www.jianshu.com/p/f1f888e4a35f
+// 对象注解：https://www.jianshu.com/p/f1f888e4a35f
 }

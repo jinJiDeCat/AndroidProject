@@ -200,4 +200,24 @@
     <string name="camera_launch_fail">无法启动相机</string>
     <string name="camera_image_error">目标地址错误</string>
 
+    <!-- 视频下载 -->
+    <string name="video_download_title">视频下载管理</string>
+    <string name="video_download_series_hint">输入剧集编号可筛选已下载的视频，留空则显示全部</string>
+    <string name="video_download_series_input">如：series_a</string>
+    <string name="video_download_series_display">所属剧集：%1$s</string>
+    <string name="video_download_filter">查询</string>
+    <string name="video_download_filter_reset">重置</string>
+    <string name="video_download_add_single">添加单个下载</string>
+    <string name="video_download_add_batch">批量添加下载</string>
+    <string name="video_download_pause_all">全部暂停</string>
+    <string name="video_download_resume_all">全部继续</string>
+    <string name="video_download_delete_selected">删除选中</string>
+    <string name="video_download_selection_empty">未选择任何视频</string>
+    <string name="video_download_select">选择</string>
+    <string name="video_download_start">开始/继续</string>
+    <string name="video_download_pause">暂停</string>
+    <string name="video_download_delete">删除</string>
+    <string name="video_download_progress_format">%1$s / %2$s（%3$d%%）</string>
+    <string name="video_download_status">%1$s · 上次更新：%2$s</string>
+
 </resources>
