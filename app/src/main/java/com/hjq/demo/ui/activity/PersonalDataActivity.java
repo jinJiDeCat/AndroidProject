@@ -8,13 +8,13 @@ import android.widget.ImageView;
 import com.hjq.demo.R;
 import com.hjq.demo.aop.SingleClick;
 import com.hjq.demo.common.MyActivity;
+import com.hjq.demo.http.SimpleHttp;
+import com.hjq.demo.http.callback.HttpCallback;
 import com.hjq.demo.http.glide.GlideApp;
 import com.hjq.demo.http.model.HttpData;
 import com.hjq.demo.http.request.UpdateImageApi;
 import com.hjq.demo.ui.dialog.AddressDialog;
 import com.hjq.demo.ui.dialog.InputDialog;
-import com.hjq.http.EasyHttp;
-import com.hjq.http.listener.HttpCallback;
 import com.hjq.widget.layout.SettingBar;
 
 import java.io.File;
@@ -85,7 +85,7 @@ public final class PersonalDataActivity extends MyActivity {
                     return;
                 }
                 // 上传头像
-                EasyHttp.post(this)
+                SimpleHttp.post(this)
                         .api(new UpdateImageApi()
                                 .setImage(new File(data.get(0))))
                         .request(new HttpCallback<HttpData<String>>(PersonalDataActivity.this) {

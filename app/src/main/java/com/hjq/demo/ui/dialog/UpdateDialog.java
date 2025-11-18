@@ -16,11 +16,11 @@ import com.hjq.demo.R;
 import com.hjq.demo.aop.CheckNet;
 import com.hjq.demo.aop.Permissions;
 import com.hjq.demo.aop.SingleClick;
+import com.hjq.demo.http.SimpleHttp;
+import com.hjq.demo.http.listener.OnDownloadListener;
+import com.hjq.demo.http.model.DownloadInfo;
+import com.hjq.demo.http.model.HttpMethod;
 import com.hjq.demo.other.AppConfig;
-import com.hjq.http.EasyHttp;
-import com.hjq.http.listener.OnDownloadListener;
-import com.hjq.http.model.DownloadInfo;
-import com.hjq.http.model.HttpMethod;
 import com.hjq.permissions.Permission;
 
 import java.io.File;
@@ -150,7 +150,7 @@ public final class UpdateDialog {
             // 设置对话框不能被取消
             setCancelable(false);
 
-            EasyHttp.download(this)
+            SimpleHttp.download(this)
                     .method(HttpMethod.GET)
                     .file(mApkFile)
                     .url(mDownloadUrl)

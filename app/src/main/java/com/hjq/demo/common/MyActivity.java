@@ -16,9 +16,9 @@ import com.hjq.demo.R;
 import com.hjq.demo.action.SwipeAction;
 import com.hjq.demo.action.TitleBarAction;
 import com.hjq.demo.action.ToastAction;
+import com.hjq.demo.http.listener.OnHttpListener;
 import com.hjq.demo.http.model.HttpData;
 import com.hjq.demo.ui.dialog.WaitDialog;
-import com.hjq.http.listener.OnHttpListener;
 
 import okhttp3.Call;
 

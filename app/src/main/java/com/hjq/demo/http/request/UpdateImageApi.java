@@ -1,6 +1,6 @@
 package com.hjq.demo.http.request;
 
-import com.hjq.http.config.IRequestApi;
+import com.hjq.demo.http.core.RequestApi;
 
 import java.io.File;
 
@@ -10,7 +10,7 @@ import java.io.File;
  *    time   : 2019/12/07
  *    desc   : 上传图片
  */
-public final class UpdateImageApi implements IRequestApi {
+public final class UpdateImageApi implements RequestApi {
 
     @Override
     public String getApi() {

@@ -16,7 +16,7 @@ import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.module.AppGlideModule;
 import com.bumptech.glide.request.RequestOptions;
 import com.hjq.demo.R;
-import com.hjq.http.EasyConfig;
+import com.hjq.demo.http.SimpleHttp;
 
 import java.io.File;
 import java.io.InputStream;
@@ -67,7 +67,7 @@ public final class GlideConfig extends AppGlideModule {
     @Override
     public void registerComponents(@NonNull Context context, @NonNull Glide glide, @NonNull Registry registry) {
         // Glide 默认采用的是 HttpURLConnection 来做网络请求，这里切换成更高效的 OkHttp
-        registry.replace(GlideUrl.class, InputStream.class, new OkHttpLoader.Factory(EasyConfig.getInstance().getClient()));
+        registry.replace(GlideUrl.class, InputStream.class, new OkHttpLoader.Factory(SimpleHttp.getInstance().getClient()));
     }
 
     @Override

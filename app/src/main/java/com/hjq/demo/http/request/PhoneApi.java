@@ -1,6 +1,6 @@
 package com.hjq.demo.http.request;
 
-import com.hjq.http.config.IRequestApi;
+import com.hjq.demo.http.core.RequestApi;
 
 /**
  *    author : Android 轮子哥
@@ -8,7 +8,7 @@ import com.hjq.http.config.IRequestApi;
  *    time   : 2019/12/07
  *    desc   : 修改手机
  */
-public final class PhoneApi implements IRequestApi {
+public final class PhoneApi implements RequestApi {
 
     @Override
     public String getApi() {

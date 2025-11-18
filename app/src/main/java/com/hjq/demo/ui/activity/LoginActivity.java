@@ -18,6 +18,8 @@ import com.hjq.demo.aop.DebugLog;
 import com.hjq.demo.aop.SingleClick;
 import com.hjq.demo.common.MyActivity;
 import com.hjq.demo.helper.InputTextHelper;
+import com.hjq.demo.http.SimpleHttp;
+import com.hjq.demo.http.callback.HttpCallback;
 import com.hjq.demo.http.glide.GlideApp;
 import com.hjq.demo.http.model.HttpData;
 import com.hjq.demo.http.request.LoginApi;
@@ -25,9 +27,6 @@ import com.hjq.demo.http.response.LoginBean;
 import com.hjq.demo.other.IntentKey;
 import com.hjq.demo.other.KeyboardWatcher;
 import com.hjq.demo.wxapi.WXEntryActivity;
-import com.hjq.http.EasyConfig;
-import com.hjq.http.EasyHttp;
-import com.hjq.http.listener.HttpCallback;
 import com.hjq.umeng.Platform;
 import com.hjq.umeng.UmengClient;
 import com.hjq.umeng.UmengLogin;
@@ -163,7 +162,7 @@ public final class LoginActivity extends MyActivity
                 return;
             }
 
-            EasyHttp.post(this)
+            SimpleHttp.post(this)
                     .api(new LoginApi()
                             .setPhone(mPhoneView.getText().toString())
                             .setPassword(mPasswordView.getText().toString()))
@@ -172,7 +171,7 @@ public final class LoginActivity extends MyActivity
                         @Override
                         public void onSucceed(HttpData<LoginBean> data) {
                             // 更新 Token
-                            EasyConfig.getInstance()
+                            SimpleHttp.getInstance()
                                     .addParam("token", data.getData().getToken());
                             // 跳转到主页
                             startActivity(HomeActivity.class);

@@ -18,13 +18,12 @@ import com.hjq.bar.style.TitleBarLightStyle;
 import com.hjq.demo.R;
 import com.hjq.demo.action.SwipeAction;
 import com.hjq.demo.helper.ActivityStackManager;
-import com.hjq.demo.http.model.RequestHandler;
+import com.hjq.demo.http.SimpleHttp;
+import com.hjq.demo.http.core.ServerHost;
 import com.hjq.demo.http.server.ReleaseServer;
 import com.hjq.demo.http.server.TestServer;
 import com.hjq.demo.other.AppConfig;
 import com.hjq.demo.other.CrashHandler;
-import com.hjq.http.EasyConfig;
-import com.hjq.http.config.IRequestServer;
 import com.hjq.toast.ToastInterceptor;
 import com.hjq.toast.ToastUtils;
 import com.hjq.umeng.UmengClient;
@@ -111,28 +110,8 @@ public final class MyApplication extends Application implements LifecycleOwner {
         ActivityStackManager.getInstance().init(application);
 
         // 网络请求框架初始化
-        IRequestServer server;
-        if (AppConfig.isDebug()) {
-            server = new TestServer();
-        } else {
-            server = new ReleaseServer();
-        }
-
-        EasyConfig.with(new OkHttpClient())
-                // 是否打印日志
-                //.setLogEnabled(AppConfig.isDebug())
-                // 设置服务器配置
-                .setServer(server)
-                // 设置请求处理策略
-                .setHandler(new RequestHandler(application))
-                // 设置请求重试次数
-                .setRetryCount(1)
-                // 添加全局请求参数
-                //.addParam("token", "6666666")
-                // 添加全局请求头
-                //.addHeader("time", "20191030")
-                // 启用配置
-                .into();
+        ServerHost server = AppConfig.isDebug() ? new TestServer() : new ReleaseServer();
+        SimpleHttp.init(application, new OkHttpClient.Builder().build(), server);
 
         // Activity 侧滑返回
         SmartSwipeBack.activitySlidingBack(application, activity -> {

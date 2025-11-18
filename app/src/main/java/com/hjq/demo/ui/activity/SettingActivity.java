@@ -9,6 +9,8 @@ import com.hjq.demo.aop.SingleClick;
 import com.hjq.demo.common.MyActivity;
 import com.hjq.demo.helper.ActivityStackManager;
 import com.hjq.demo.helper.CacheDataManager;
+import com.hjq.demo.http.SimpleHttp;
+import com.hjq.demo.http.callback.HttpCallback;
 import com.hjq.demo.http.glide.GlideApp;
 import com.hjq.demo.http.model.HttpData;
 import com.hjq.demo.http.request.LogoutApi;
@@ -16,8 +18,6 @@ import com.hjq.demo.other.AppConfig;
 import com.hjq.demo.ui.dialog.MenuDialog;
 import com.hjq.demo.ui.dialog.SafeDialog;
 import com.hjq.demo.ui.dialog.UpdateDialog;
-import com.hjq.http.EasyHttp;
-import com.hjq.http.listener.HttpCallback;
 import com.hjq.widget.layout.SettingBar;
 import com.hjq.widget.view.SwitchButton;
 
@@ -144,7 +144,7 @@ public final class SettingActivity extends MyActivity
                 }
 
                 // 退出登录
-                EasyHttp.post(this)
+                SimpleHttp.post(this)
                         .api(new LogoutApi())
                         .request(new HttpCallback<HttpData<Void>>(this) {
 
