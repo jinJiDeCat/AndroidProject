@@ -11,12 +11,12 @@ import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;
 import com.hjq.demo.R;
 import com.hjq.demo.common.MyActivity;
+import com.hjq.demo.http.SimpleHttp;
+import com.hjq.demo.http.callback.HttpCallback;
 import com.hjq.demo.http.model.HttpData;
 import com.hjq.demo.http.request.UserInfoApi;
 import com.hjq.demo.http.response.UserInfoBean;
 import com.hjq.demo.other.AppConfig;
-import com.hjq.http.EasyHttp;
-import com.hjq.http.listener.HttpCallback;
 
 /**
  *    author : Android 轮子哥
@@ -61,7 +61,7 @@ public final class SplashActivity extends MyActivity {
             return;
         }
         // 刷新用户信息
-        EasyHttp.post(this)
+        SimpleHttp.post(this)
                 .api(new UserInfoApi())
                 .request(new HttpCallback<HttpData<UserInfoBean>>(this) {
 

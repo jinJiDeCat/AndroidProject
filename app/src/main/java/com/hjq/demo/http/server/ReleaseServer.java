@@ -1,6 +1,6 @@
 package com.hjq.demo.http.server;
 
-import com.hjq.http.config.IRequestServer;
+import com.hjq.demo.http.core.ServerHost;
 
 /**
  *    author : Android 轮子哥
@@ -8,7 +8,7 @@ import com.hjq.http.config.IRequestServer;
  *    time   : 2019/12/07
  *    desc   : 正式环境
  */
-public class ReleaseServer implements IRequestServer {
+public class ReleaseServer implements ServerHost {
 
     @Override
     public String getHost() {

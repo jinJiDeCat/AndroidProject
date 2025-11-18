@@ -94,7 +94,7 @@
 
 #### 作者的其他开源项目
 
-* 网络框架：[EasyHttp](https://github.com/getActivity/EasyHttp)  （已集成）
+* 网络框架：SimpleHttp（基于 OkHttp + Gson 自研封装，已集成）
 
 * 日志框架：[Logcat](https://github.com/getActivity/Logcat)  （已集成）
 

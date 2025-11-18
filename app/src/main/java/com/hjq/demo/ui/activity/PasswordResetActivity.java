@@ -11,11 +11,11 @@ import com.hjq.demo.aop.DebugLog;
 import com.hjq.demo.aop.SingleClick;
 import com.hjq.demo.common.MyActivity;
 import com.hjq.demo.helper.InputTextHelper;
+import com.hjq.demo.http.SimpleHttp;
+import com.hjq.demo.http.callback.HttpCallback;
 import com.hjq.demo.http.model.HttpData;
 import com.hjq.demo.http.request.PasswordApi;
 import com.hjq.demo.other.IntentKey;
-import com.hjq.http.EasyHttp;
-import com.hjq.http.listener.HttpCallback;
 
 /**
  *    author : Android 轮子哥
@@ -84,7 +84,7 @@ public final class PasswordResetActivity extends MyActivity {
             }
 
             // 重置密码
-            EasyHttp.post(this)
+            SimpleHttp.post(this)
                     .api(new PasswordApi()
                             .setPhone(mPhoneNumber)
                             .setCode(mVerifyCode)

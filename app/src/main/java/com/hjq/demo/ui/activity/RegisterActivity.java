@@ -12,13 +12,13 @@ import com.hjq.demo.R;
 import com.hjq.demo.aop.SingleClick;
 import com.hjq.demo.common.MyActivity;
 import com.hjq.demo.helper.InputTextHelper;
+import com.hjq.demo.http.SimpleHttp;
+import com.hjq.demo.http.callback.HttpCallback;
 import com.hjq.demo.http.model.HttpData;
 import com.hjq.demo.http.request.GetCodeApi;
 import com.hjq.demo.http.request.RegisterApi;
 import com.hjq.demo.http.response.RegisterBean;
 import com.hjq.demo.other.IntentKey;
-import com.hjq.http.EasyHttp;
-import com.hjq.http.listener.HttpCallback;
 import com.hjq.widget.view.CountdownView;
 
 /**
@@ -87,7 +87,7 @@ public final class RegisterActivity extends MyActivity {
             }
 
             // 获取验证码
-            EasyHttp.post(this)
+            SimpleHttp.post(this)
                     .api(new GetCodeApi()
                             .setPhone(mPhoneView.getText().toString()))
                     .request(new HttpCallback<HttpData<Void>>(this) {
@@ -125,7 +125,7 @@ public final class RegisterActivity extends MyActivity {
             }
 
             // 提交注册
-            EasyHttp.post(this)
+            SimpleHttp.post(this)
                     .api(new RegisterApi()
                             .setPhone(mPhoneView.getText().toString())
                             .setCode(mCodeView.getText().toString())

@@ -10,8 +10,8 @@ import com.hjq.bar.TitleBar;
 import com.hjq.base.BaseFragment;
 import com.hjq.demo.action.TitleBarAction;
 import com.hjq.demo.action.ToastAction;
+import com.hjq.demo.http.listener.OnHttpListener;
 import com.hjq.demo.http.model.HttpData;
-import com.hjq.http.listener.OnHttpListener;
 
 import okhttp3.Call;
 

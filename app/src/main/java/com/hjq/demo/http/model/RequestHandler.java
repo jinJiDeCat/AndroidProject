@@ -7,34 +7,22 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-
-import androidx.lifecycle.LifecycleOwner;
+import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.internal.bind.TypeAdapters;
 import com.hjq.demo.R;
 import com.hjq.demo.helper.ActivityStackManager;
-import com.hjq.demo.http.json.BooleanTypeAdapter;
-import com.hjq.demo.http.json.DoubleTypeAdapter;
-import com.hjq.demo.http.json.FloatTypeAdapter;
-import com.hjq.demo.http.json.IntegerTypeAdapter;
-import com.hjq.demo.http.json.ListTypeAdapter;
-import com.hjq.demo.http.json.LongTypeAdapter;
-import com.hjq.demo.http.json.StringTypeAdapter;
+import com.hjq.demo.http.exception.CancelException;
+import com.hjq.demo.http.exception.DataException;
+import com.hjq.demo.http.exception.HttpException;
+import com.hjq.demo.http.exception.NetworkException;
+import com.hjq.demo.http.exception.ResponseException;
+import com.hjq.demo.http.exception.ResultException;
+import com.hjq.demo.http.exception.ServerException;
+import com.hjq.demo.http.exception.TimeoutException;
+import com.hjq.demo.http.exception.TokenException;
 import com.hjq.demo.ui.activity.LoginActivity;
-import com.hjq.http.EasyLog;
-import com.hjq.http.config.IRequestHandler;
-import com.hjq.http.exception.CancelException;
-import com.hjq.http.exception.DataException;
-import com.hjq.http.exception.HttpException;
-import com.hjq.http.exception.NetworkException;
-import com.hjq.http.exception.ResponseException;
-import com.hjq.http.exception.ResultException;
-import com.hjq.http.exception.ServerException;
-import com.hjq.http.exception.TimeoutException;
-import com.hjq.http.exception.TokenException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,29 +32,26 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-import java.util.List;
 
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 /**
- *    author : Android 轮子哥
- *    github : https://github.com/getActivity/AndroidProject
- *    time   : 2019/12/07
- *    desc   : 请求处理类
+ * 请求处理类
  */
-public final class RequestHandler implements IRequestHandler {
+public final class RequestHandler {
+
+    private static final String TAG = "SimpleHttp";
 
     private final Application mApplication;
+    private final Gson mGson;
 
-    private Gson mGson;
-
-    public RequestHandler(Application application) {
+    public RequestHandler(Application application, Gson gson) {
         mApplication = application;
+        mGson = gson;
     }
 
-    @Override
-    public Object requestSucceed(LifecycleOwner lifecycle, Response response, Type type) throws Exception {
+    public Object parseResponse(Response response, Type type) throws Exception {
 
         if (Response.class.equals(type)) {
             return response;
@@ -95,8 +80,7 @@ public final class RequestHandler implements IRequestHandler {
             throw new DataException(mApplication.getString(R.string.http_data_explain_error), e);
         }
 
-        // 打印这个 Json
-        EasyLog.json(text);
+        Log.d(TAG, text);
 
         final Object result;
         if (String.class.equals(type)) {
@@ -119,21 +103,8 @@ public final class RequestHandler implements IRequestHandler {
         } else {
 
             try {
-                if (mGson == null) {
-                    // Json 容错处理
-                    mGson = new GsonBuilder()
-                            .registerTypeAdapterFactory(TypeAdapters.newFactory(String.class, new StringTypeAdapter()))
-                            .registerTypeAdapterFactory(TypeAdapters.newFactory(boolean.class, Boolean.class, new BooleanTypeAdapter()))
-                            .registerTypeAdapterFactory(TypeAdapters.newFactory(int.class, Integer.class, new IntegerTypeAdapter()))
-                            .registerTypeAdapterFactory(TypeAdapters.newFactory(long.class, Long.class, new LongTypeAdapter()))
-                            .registerTypeAdapterFactory(TypeAdapters.newFactory(float.class, Float.class, new FloatTypeAdapter()))
-                            .registerTypeAdapterFactory(TypeAdapters.newFactory(double.class, Double.class, new DoubleTypeAdapter()))
-                            .registerTypeHierarchyAdapter(List.class, new ListTypeAdapter())
-                            .create();
-                }
                 result = mGson.fromJson(text, type);
             } catch (JsonSyntaxException e) {
-                // 返回结果读取异常
                 throw new DataException(mApplication.getString(R.string.http_data_explain_error), e);
             }
 
@@ -154,8 +125,7 @@ public final class RequestHandler implements IRequestHandler {
         return result;
     }
 
-    @Override
-    public Exception requestFail(LifecycleOwner lifecycle,  Exception e) {
+    public Exception convertException(Exception e) {
         // 判断这个异常是不是自己抛的
         if (e instanceof HttpException) {
             if (e instanceof TokenException) {

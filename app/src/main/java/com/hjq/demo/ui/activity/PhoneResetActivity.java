@@ -11,12 +11,12 @@ import com.hjq.demo.aop.DebugLog;
 import com.hjq.demo.aop.SingleClick;
 import com.hjq.demo.common.MyActivity;
 import com.hjq.demo.helper.InputTextHelper;
+import com.hjq.demo.http.SimpleHttp;
+import com.hjq.demo.http.callback.HttpCallback;
 import com.hjq.demo.http.model.HttpData;
 import com.hjq.demo.http.request.GetCodeApi;
 import com.hjq.demo.http.request.PhoneApi;
 import com.hjq.demo.other.IntentKey;
-import com.hjq.http.EasyHttp;
-import com.hjq.http.listener.HttpCallback;
 import com.hjq.toast.ToastUtils;
 import com.hjq.widget.view.CountdownView;
 
@@ -85,7 +85,7 @@ public final class PhoneResetActivity extends MyActivity {
             }
 
             // 获取验证码
-            EasyHttp.post(this)
+            SimpleHttp.post(this)
                     .api(new GetCodeApi()
                             .setPhone(mPhoneView.getText().toString()))
                     .request(new HttpCallback<HttpData<Void>>(this) {
@@ -115,7 +115,7 @@ public final class PhoneResetActivity extends MyActivity {
             }
 
             // 更换手机号
-            EasyHttp.post(this)
+            SimpleHttp.post(this)
                     .api(new PhoneApi()
                             .setPreCode(mVerifyCode)
                             .setPhone(mPhoneView.getText().toString())

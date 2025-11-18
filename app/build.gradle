@@ -103,9 +103,6 @@ dependencies {
     // 友盟封装
     implementation project(':umeng')
 
-    // 网络请求框架：https://github.com/getActivity/EasyHttp
-    implementation 'com.hjq:http:6.9'
-
     // 权限请求框架：https://github.com/getActivity/XXPermissions
     implementation 'com.hjq:xxpermissions:6.5'
 

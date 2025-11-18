@@ -8,11 +8,11 @@ import android.widget.TextView;
 import com.hjq.base.BaseDialog;
 import com.hjq.demo.R;
 import com.hjq.demo.aop.SingleClick;
+import com.hjq.demo.http.SimpleHttp;
+import com.hjq.demo.http.callback.HttpCallback;
 import com.hjq.demo.http.model.HttpData;
 import com.hjq.demo.http.request.GetCodeApi;
 import com.hjq.demo.http.request.VerifyCodeApi;
-import com.hjq.http.EasyHttp;
-import com.hjq.http.listener.OnHttpListener;
 import com.hjq.toast.ToastUtils;
 import com.hjq.widget.view.CountdownView;
 
@@ -73,10 +73,10 @@ public final class SafeDialog {
                     }
 
                     // 获取验证码
-                    EasyHttp.post(this)
+                    SimpleHttp.post(this)
                             .api(new GetCodeApi()
                                     .setPhone(mPhoneNumber))
-                            .request(new OnHttpListener<HttpData<Void>>() {
+                            .request(new HttpCallback<HttpData<Void>>(this) {
 
                                 @Override
                                 public void onSucceed(HttpData<Void> data) {
@@ -106,11 +106,11 @@ public final class SafeDialog {
                     }
 
                     // 验证码校验
-                    EasyHttp.post(this)
+                    SimpleHttp.post(this)
                             .api(new VerifyCodeApi()
                                     .setPhone(mPhoneNumber)
                                     .setCode(mCodeView.getText().toString()))
-                            .request(new OnHttpListener<HttpData<Void>>() {
+                            .request(new HttpCallback<HttpData<Void>>(this) {
 
                                 @Override
                                 public void onSucceed(HttpData<Void> data) {
