@@ -184,5 +184,9 @@ public final class VideoDownloadService extends Service implements VideoDownload
         public VideoDownloadRepository getRepository() {
             return mRepository;
         }
+
+        public long getAvailableStorageBytes() {
+            return mManager.getAvailableStorageBytes();
+        }
     }
 }

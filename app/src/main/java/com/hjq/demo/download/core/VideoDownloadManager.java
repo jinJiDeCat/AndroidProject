@@ -2,6 +2,7 @@ package com.hjq.demo.download.core;
 
 import android.content.Context;
 import android.os.Environment;
+import android.os.StatFs;
 
 import androidx.annotation.NonNull;
 
@@ -33,6 +34,8 @@ public final class VideoDownloadManager {
     private final ExecutorService mWorkerExecutor;
     private final Map<String, VideoDownloadTask> mRunningTasks = new ConcurrentHashMap<>();
     private final Callback mCallback;
+    private final File mStorageRoot;
+    private final VideoDownloadTask.StorageChecker mStorageChecker = requiredBytes -> hasEnoughStorage(requiredBytes);
 
     public VideoDownloadManager(@NonNull Context context,
                                 @NonNull VideoDownloadRepository repository,
@@ -43,6 +46,11 @@ public final class VideoDownloadManager {
         mOkHttpClient = okHttpClient;
         mCallback = callback;
         mWorkerExecutor = Executors.newFixedThreadPool(3);
+        File root = context.getExternalFilesDir(Environment.DIRECTORY_MOVIES);
+        if (root == null) {
+            root = context.getFilesDir();
+        }
+        mStorageRoot = FileUtil.mkdir(root);
     }
 
     public void enqueue(VideoDownloadEntity entity) {
@@ -156,18 +164,14 @@ public final class VideoDownloadManager {
             public void onProgress(String videoId, long downloadedBytes, long totalBytes) {
                 mRepository.updateProgress(videoId, downloadedBytes, totalBytes, DownloadStatus.DOWNLOADING);
             }
-        });
+        }, mStorageChecker);
         mRunningTasks.put(entity.getVideoId(), task);
         notifyActive();
         mWorkerExecutor.execute(task);
     }
 
     private File resolveTargetFile(VideoDownloadEntity entity) {
-        File root = mContext.getExternalFilesDir(Environment.DIRECTORY_MOVIES);
-        if (root == null) {
-            root = mContext.getFilesDir();
-        }
-        File seriesDir = FileUtil.mkdir(new File(root, StrUtil.blankToDefault(entity.getSeriesId(), "default_series")));
+        File seriesDir = FileUtil.mkdir(new File(mStorageRoot, StrUtil.blankToDefault(entity.getSeriesId(), "default_series")));
         String safeName = buildFileName(entity);
         return new File(seriesDir, safeName + ".mp4");
     }
@@ -185,9 +189,31 @@ public final class VideoDownloadManager {
         FileUtil.del(entity.getFilePath());
     }
 
+    public long getAvailableStorageBytes() {
+        StatFs statFs = new StatFs(mStorageRoot.getAbsolutePath());
+        return statFs.getAvailableBytes();
+    }
+
+    private boolean hasEnoughStorage(long requiredBytes) {
+        if (requiredBytes <= 0) {
+            return true;
+        }
+        // 保留 10MB 缓冲区
+        long buffer = 10 * 1024 * 1024;
+        return getAvailableStorageBytes() > (requiredBytes + buffer);
+    }
+
     private void notifyActive() {
         if (mCallback != null) {
             mCallback.onActiveTaskChanged(mRunningTasks.size());
         }
+    }
+
+    File getStorageRoot() {
+        return mStorageRoot;
+    }
+
+    VideoDownloadTask.StorageChecker getStorageChecker() {
+        return mStorageChecker;
     }
 }

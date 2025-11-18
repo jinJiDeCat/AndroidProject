@@ -19,21 +19,28 @@ import okhttp3.ResponseBody;
 
 public final class VideoDownloadTask implements Runnable {
 
+    public interface StorageChecker {
+        boolean hasEnoughSpace(long requiredBytes);
+    }
+
     private final VideoDownloadEntity mEntity;
     private final OkHttpClient mOkHttpClient;
     private final File mTargetFile;
     private final VideoDownloadListener mListener;
+    private final StorageChecker mStorageChecker;
     private final AtomicBoolean mPaused = new AtomicBoolean(false);
     private final AtomicBoolean mCancelled = new AtomicBoolean(false);
 
     public VideoDownloadTask(@NonNull VideoDownloadEntity entity,
                              @NonNull OkHttpClient okHttpClient,
                              @NonNull File targetFile,
-                             @NonNull VideoDownloadListener listener) {
+                             @NonNull VideoDownloadListener listener,
+                             @NonNull StorageChecker storageChecker) {
         mEntity = entity;
         mOkHttpClient = okHttpClient;
         mTargetFile = targetFile;
         mListener = listener;
+        mStorageChecker = storageChecker;
     }
 
     @Override
@@ -76,6 +83,12 @@ public final class VideoDownloadTask implements Runnable {
                 totalBytes = downloadedBytes;
             }
 
+            long remainingBytes = Math.max(0, totalBytes - downloadedBytes);
+            if (!mStorageChecker.hasEnoughSpace(remainingBytes)) {
+                mListener.onStatusChanged(mEntity.getVideoId(), DownloadStatus.FAILED, downloadedBytes, totalBytes);
+                return;
+            }
+
             mListener.onStatusChanged(mEntity.getVideoId(), DownloadStatus.DOWNLOADING, downloadedBytes, totalBytes);
 
             FileUtil.touch(mTargetFile);
@@ -99,6 +112,12 @@ public final class VideoDownloadTask implements Runnable {
                 accessFile.write(buffer, 0, len);
                 downloadedBytes += len;
                 mListener.onProgress(mEntity.getVideoId(), downloadedBytes, totalBytes);
+            }
+            long finalBytes = mTargetFile.exists() ? mTargetFile.length() : 0;
+            if (totalBytes > 0 && finalBytes < totalBytes) {
+                FileUtil.del(mTargetFile);
+                mListener.onStatusChanged(mEntity.getVideoId(), DownloadStatus.FAILED, finalBytes, totalBytes);
+                return;
             }
             mListener.onStatusChanged(mEntity.getVideoId(), DownloadStatus.COMPLETED, downloadedBytes, totalBytes);
         } catch (IOException e) {
